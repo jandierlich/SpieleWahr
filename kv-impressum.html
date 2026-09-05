@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta name="robots" content="noindex, nofollow">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<title>Impressum – Korvanthiel</title>
+<style>
+  :root{
+    --neon-cyan:#00e5ff; --neon-magenta:#ff3caa; --neon-orange:#ff9d2e;
+  }
+  html{
+    overscroll-behavior:none;
+  }
+  body{
+    margin:0;
+    padding-top:max(calc(28px + env(safe-area-inset-top)), 54px);
+    padding-right:28px; padding-left:28px;
+    padding-bottom:max(calc(70px + env(safe-area-inset-bottom)), 70px);
+    background:#0d0a1c; color:#dbeaff;
+    font-family:-apple-system,'SF Pro Display','Segoe UI',system-ui,sans-serif;
+    line-height:1.65;
+    max-width:680px; margin-left:auto; margin-right:auto;
+    overscroll-behavior:none;
+  }
+  h1{
+    font-size:clamp(17px, 5.6vw, 26px);font-weight:800;letter-spacing:0.3px;
+    background:linear-gradient(90deg, var(--neon-cyan), var(--neon-magenta));
+    -webkit-background-clip:text;background-clip:text;color:transparent;
+    filter:drop-shadow(0 0 12px rgba(120,80,255,0.4));
+    
+  }
+  h2{
+    color:var(--neon-magenta);text-shadow:0 0 6px rgba(255,60,170,0.5);
+    font-size:15px; margin-top:30px; letter-spacing:1px;font-weight:700;
+  }
+  a{ color:#00e5ff; }
+  .kd{ color:var(--neon-orange); font-weight:600; }
+  .back{
+    display:inline-block; margin-top:36px;
+    border:1px solid rgba(0,229,255,0.5); color:var(--neon-cyan); text-decoration:none;
+    padding:12px 26px; border-radius:12px; letter-spacing:2px;font-weight:700;
+    box-shadow:0 0 14px rgba(0,229,255,0.25);
+    background:rgba(0,229,255,0.06);
+  }
+  .hint{
+    font-size:12.5px; color:#9fb3e0; border-left:3px solid var(--neon-orange);
+    padding:8px 12px; margin:16px 0; background:rgba(255,157,46,0.06); border-radius:0 8px 8px 0;
+  }
+</style>
+<script>
+document.addEventListener('gesturestart', function (e) { e.preventDefault(); });
+document.addEventListener('gesturechange', function (e) { e.preventDefault(); });
+document.addEventListener('touchmove', function (e) { if (e.touches && e.touches.length > 1) { e.preventDefault(); } }, { passive: false });
+</script>
+</head>
+<body>
+<h1>IMPRESSUM</h1>
+
+<div class="hint" id="fillHint" style="display:none;">
+  Diese Angaben stammen aus <code>kontakt-daten.js</code>. Trag deine echten Daten
+  dort einmal ein — sie erscheinen dann automatisch hier und in der
+  Datenschutzerklärung, auch nach künftigen Updates des Spiels.
+</div>
+
+<h2>Angaben gemäß § 5 DDG</h2>
+<p>
+  <span class="kd" id="kd-name">Jan Dierlich</span><br>
+  <span class="kd" id="kd-strasse">Steenacker 33</span><br>
+  <span class="kd" id="kd-ort">25499 Tangstedt</span><br>
+  <span class="kd" id="kd-land">Deutschland</span>
+</p>
+
+<h2>Kontakt</h2>
+<p>
+  E-Mail: <span class="kd" id="kd-email">jandierlich@googlemail.com</span><br>
+  Telefon: <span class="kd" id="kd-telefon">+49 162 7112283</span>
+</p>
+
+<h2>Verantwortlich für den Inhalt nach § 18 Abs. 2 MStV</h2>
+<p>
+  <span class="kd" id="kd-verantwortlich">Jan Dierlich, Steenacker 33, 25499 Tangstedt, Deutschland</span>
+</p>
+
+<h2>Haftungsausschluss</h2>
+<p>
+  <strong>Haftung für Inhalte:</strong> Die Inhalte dieses privaten, nicht-kommerziellen
+  Projekts wurden mit Sorgfalt erstellt. Für die Richtigkeit, Vollständigkeit und
+  Aktualität der Inhalte kann keine Gewähr übernommen werden.
+</p>
+<p>
+  <strong>Haftung für Links:</strong> Diese Seite enthält keine Links zu externen
+  Webseiten Dritter, auf deren Inhalte kein Einfluss besteht.
+</p>
+
+<h2>Urheberrecht</h2>
+<p>
+  Die durch die Betreiberin/den Betreiber erstellten Inhalte und Werke auf diesen
+  Seiten (Code, Grafiken, Sounds, Icon) unterliegen dem deutschen Urheberrecht. Alle
+  Grafiken, Sounds und das App-Icon wurden eigenständig und programmatisch erzeugt,
+  es wurden keine fremden Assets oder lizenzpflichtigen Werke verwendet. Verwendete
+  Schriften sind ausschließlich systemeigene Betriebssystem-Schriften (keine
+  eingebetteten Fremdschriften, daher keine Lizenzpflicht).
+</p>
+
+<h2>Projektstatus</h2>
+<p>
+  Korvanthiel ist ein privates, nicht-kommerzielles Hobby-Projekt ohne
+  Gewinnerzielungsabsicht, veröffentlicht über GitHub Pages für einen
+  begrenzten Kreis von Freunden und Bekannten.
+</p>
+
+<a class="back" href="kv-index.html">← ZURÜCK ZUM SPIEL</a>
+
+<script src="kv-kontakt-daten.js"></script>
+<script>
+(function(){
+  var d = window.KONTAKT_DATEN || {};
+  var map = {
+    'kd-name': d.name, 'kd-strasse': d.strasse, 'kd-ort': d.ort, 'kd-land': d.land,
+    'kd-email': d.email, 'kd-telefon': d.telefon
+  };
+  for(var id in map){
+    var el = document.getElementById(id);
+    if(el) el.textContent = map[id] || '–';
+  }
+  var v = document.getElementById('kd-verantwortlich');
+  if(v) v.textContent = [d.name, d.strasse, d.ort, d.land].filter(Boolean).join(', ');
+  // Solange noch Platzhalter (eckige Klammern) enthalten sind, Hinweis sichtbar lassen
+  var stillPlaceholder = (d.name||'').indexOf('[') !== -1;
+  var hint = document.getElementById('fillHint');
+  if(hint && !stillPlaceholder) hint.style.display='none';
+})();
+</script>
+</body>
+</html>

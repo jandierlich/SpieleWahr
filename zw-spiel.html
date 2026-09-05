@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="de" class="game-shell">
+<head>
+    <meta name="robots" content="noindex, nofollow">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<title>ZahlenturmWahr — Spiel</title>
+<meta name="description" content="ZahlenturmWahr — Zahlen steigen in einen 3D-Turm und verschmelzen. Offline spielbar.">
+<meta name="theme-color" content="#0b1224">
+<link rel="manifest" href="zw-manifest.json">
+<link rel="icon" href="zw-favicon-64.png" sizes="64x64" type="image/png">
+<link rel="icon" href="zw-favicon-32.png" sizes="32x32" type="image/png">
+<link rel="apple-touch-icon" href="zw-apple-touch-icon.png">
+<link rel="stylesheet" href="zw-style.css">
+<script>
+  try {
+    var ztTheme = localStorage.getItem('ztw-theme') || 'dark';
+    document.documentElement.setAttribute('data-theme', ztTheme);
+  } catch (e) {}
+</script>
+<script>
+document.addEventListener('gesturestart', function (e) { e.preventDefault(); });
+document.addEventListener('gesturechange', function (e) { e.preventDefault(); });
+document.addEventListener('touchmove', function (e) { if (e.touches && e.touches.length > 1) { e.preventDefault(); } }, { passive: false });
+</script>
+</head>
+<body class="game-shell">
+
+<div class="sky" aria-hidden="true">
+  <div class="glow glow-a"></div>
+  <div class="glow glow-b"></div>
+</div>
+
+<header class="topbar">
+  <div class="brand">
+    <span class="brand-mark" aria-hidden="true">
+      <span class="bm-cube bm-c1"></span>
+      <span class="bm-cube bm-c2"></span>
+      <span class="bm-cube bm-c3"></span>
+    </span>
+    <span class="brand-name">ZahlenturmWahr</span>
+  </div>
+  <div class="topbar-actions">
+    <a class="icon-btn" href="zw-index.html" title="Zur Startseite" aria-label="Zur Startseite">🏠</a>
+    <button id="zt-theme-btn" class="icon-btn" title="Hell/Dunkel umschalten">🌙</button>
+    <button id="zt-sound-btn" class="icon-btn" aria-pressed="true" title="Sound an/aus">🔊</button>
+  </div>
+</header>
+
+<main class="stage">
+
+  <section class="scoreboard" aria-label="Punktestand">
+    <div class="score-card">
+      <span class="score-label">Punkte</span>
+      <span class="score-value" id="zt-score">0</span>
+    </div>
+    <div class="score-card">
+      <span class="score-label">Bestwert</span>
+      <span class="score-value" id="zt-best">0</span>
+    </div>
+    <div class="score-card" id="zt-goal-card" hidden>
+      <span class="score-label">Ziel</span>
+      <span class="score-value" id="zt-goal-value">–</span>
+    </div>
+    <div class="score-card combo-card" id="zt-combo-card" hidden>
+      <span class="score-label">Kombo</span>
+      <span class="score-value" id="zt-combo">×1</span>
+    </div>
+  </section>
+
+  <section class="next-row" aria-label="Nächste Zahlen">
+    <div class="next-slot">
+      <span class="next-label">steigt jetzt</span>
+      <span class="next-tile zt-tile" id="zt-next-value">2</span>
+    </div>
+    <span class="next-arrow" aria-hidden="true">→</span>
+    <div class="next-slot next-slot-small">
+      <span class="next-label">danach</span>
+      <span class="next-tile zt-tile" id="zt-next-value-2">4</span>
+    </div>
+  </section>
+
+  <section class="tower-wrap">
+    <div class="silo-frame">
+      <div class="silo-ceiling" aria-hidden="true"></div>
+      <div class="silo-3d" id="zt-board" role="group" aria-label="Turm-Spielfeld"></div>
+    </div>
+
+    <p class="status-line" id="zt-status" hidden></p>
+  </section>
+
+  <section class="controls">
+    <button id="zt-undo-btn" class="btn btn-ghost" disabled>↩︎ Rückgängig</button>
+    <button id="zt-newgame-btn" class="btn btn-primary">🔄 Neuer Turm</button>
+  </section>
+
+  <div class="highest-badge">Höchster Wert je Stein: <span id="zt-highest">–</span></div>
+</main>
+
+<div class="toast" id="zt-toast" role="status" aria-live="polite"></div>
+
+<div class="modal-backdrop" id="zt-goal-modal-backdrop" hidden>
+  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="zt-goal-modal-title">
+    <h2 id="zt-goal-modal-title">🎯 Ziel erreicht!</h2>
+    <p id="zt-goal-modal-text" class="goal-modal-text"></p>
+    <div class="goal-modal-actions">
+      <button class="btn btn-primary" id="zt-goal-next-btn">Nächstes Ziel</button>
+      <button class="btn btn-ghost" id="zt-goal-continue-btn">Weiterspielen</button>
+      <a class="btn btn-ghost" href="zw-index.html">Zur Startseite</a>
+    </div>
+  </div>
+</div>
+
+<div class="modal-backdrop" id="zt-confirm-modal-backdrop" hidden>
+  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="zt-confirm-modal-title">
+    <h2 id="zt-confirm-modal-title">Bist du sicher?</h2>
+    <p id="zt-confirm-modal-text" class="goal-modal-text"></p>
+    <div class="goal-modal-actions">
+      <button class="btn btn-primary" id="zt-confirm-yes-btn">Ja</button>
+      <button class="btn btn-ghost" id="zt-confirm-no-btn">Abbrechen</button>
+    </div>
+  </div>
+</div>
+
+<script src="zw-game.js"></script>
+<script>
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+      navigator.serviceWorker.register('zw-sw.js').catch(() => {});
+    });
+  }
+</script>
+</body>
+</html>
+

@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta name="robots" content="noindex, nofollow">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<title>ZahlenturmWahr</title>
+<meta name="description" content="ZahlenturmWahr — Zahlen steigen in einen 3D-Turm und verschmelzen. Endlos-Modus oder Ziel-Modus. Offline spielbar.">
+<meta name="theme-color" content="#0b1224">
+<link rel="manifest" href="zw-manifest.json">
+<link rel="icon" href="zw-favicon-64.png" sizes="64x64" type="image/png">
+<link rel="icon" href="zw-favicon-32.png" sizes="32x32" type="image/png">
+<link rel="apple-touch-icon" href="zw-apple-touch-icon.png">
+<link rel="stylesheet" href="zw-style.css">
+<script>
+  try {
+    var ztTheme = localStorage.getItem('ztw-theme') || 'dark';
+    document.documentElement.setAttribute('data-theme', ztTheme);
+  } catch (e) {}
+</script>
+<script>
+document.addEventListener('gesturestart', function (e) { e.preventDefault(); });
+document.addEventListener('gesturechange', function (e) { e.preventDefault(); });
+document.addEventListener('touchmove', function (e) { if (e.touches && e.touches.length > 1) { e.preventDefault(); } }, { passive: false });
+</script>
+</head>
+<body class="menu-shell">
+
+<div class="sky" aria-hidden="true">
+  <div class="glow glow-a"></div>
+  <div class="glow glow-b"></div>
+</div>
+
+<header class="topbar">
+  <div class="brand">
+    <span class="brand-mark" aria-hidden="true">
+      <span class="bm-cube bm-c1"></span>
+      <span class="bm-cube bm-c2"></span>
+      <span class="bm-cube bm-c3"></span>
+    </span>
+    <span class="brand-name">ZahlenturmWahr</span>
+  </div>
+  <div class="topbar-actions">
+    <a class="icon-btn" href="index.html" title="Zur SpieleWahr-Startseite" aria-label="Zur SpieleWahr-Startseite">🏠</a>
+    <button id="zt-theme-btn" class="icon-btn" title="Hell/Dunkel umschalten">🌙</button>
+  </div>
+</header>
+
+<main class="menu-page">
+
+  <p class="menu-intro">Zahlen steigen im Turm auf und verschmelzen zu neuen Zahlen. Wähle einen Modus:</p>
+
+  <section class="menu-section continue-card" id="zt-continue-section" hidden>
+    <h2 class="menu-heading">▶️ Weiterspielen</h2>
+    <p class="menu-sub" id="zt-continue-sub"></p>
+    <a class="btn btn-primary menu-btn" id="zt-continue-btn" href="zw-spiel.html">Spiel fortsetzen</a>
+  </section>
+
+  <section class="menu-section">
+    <h2 class="menu-heading">Endlos-Modus</h2>
+    <p class="menu-sub">Ohne festes Ziel — der Turm wird mit der Zeit immer anspruchsvoller.</p>
+    <a class="btn btn-primary menu-btn" href="zw-spiel.html?mode=endless&amp;new=1">🔄 Ohne Ziel spielen</a>
+  </section>
+
+  <section class="menu-section">
+    <h2 class="menu-heading">Ziel-Modus</h2>
+    <p class="menu-sub">Erreiche eine bestimmte Zahl — möglichst in wenigen Zügen.</p>
+    <div class="goal-grid">
+      <a class="goal-chip zt-tile" data-v="128" href="zw-spiel.html?mode=goal&amp;target=128&amp;new=1">128</a>
+      <a class="goal-chip zt-tile" data-v="256" href="zw-spiel.html?mode=goal&amp;target=256&amp;new=1">256</a>
+      <a class="goal-chip zt-tile" data-v="512" href="zw-spiel.html?mode=goal&amp;target=512&amp;new=1">512</a>
+      <a class="goal-chip zt-tile" data-v="1024" href="zw-spiel.html?mode=goal&amp;target=1024&amp;new=1">1024</a>
+      <a class="goal-chip zt-tile" data-v="2048" href="zw-spiel.html?mode=goal&amp;target=2048&amp;new=1">2048</a>
+      <a class="goal-chip zt-tile" data-prism="true" href="zw-spiel.html?mode=goal&amp;target=4096&amp;new=1">4096</a>
+      <a class="goal-chip zt-tile" data-prism="true" href="zw-spiel.html?mode=goal&amp;target=8192&amp;new=1">8192</a>
+      <a class="goal-chip zt-tile" data-prism="true" href="zw-spiel.html?mode=goal&amp;target=16384&amp;new=1">16384</a>
+    </div>
+  </section>
+
+  <section class="menu-section legal-section">
+    <div class="menu-legal-row">
+      <a class="btn btn-ghost menu-legal-btn" href="zw-impressum.html">Impressum</a>
+      <a class="btn btn-ghost menu-legal-btn" href="zw-datenschutz.html">Datenschutz</a>
+    </div>
+  </section>
+
+  <section class="menu-section">
+    <button class="btn btn-ghost menu-btn" id="zt-info-btn">ⓘ Anleitung</button>
+  </section>
+
+  <div class="highest-badge">Höchster Wert je Stein: <span id="zt-highest">–</span></div>
+</main>
+
+<div class="modal-backdrop" id="zt-info-backdrop" hidden>
+  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="zt-info-title">
+    <h2 id="zt-info-title">So funktioniert ZahlenturmWahr</h2>
+    <ul class="rules-list">
+      <li>Tippe auf eine der 5 Turmspalten — die angezeigte Zahl steigt von unten in die Spalte auf.</li>
+      <li>Der Turm baut sich von oben nach unten auf: Der erste Stein einer Spalte landet ganz oben (an der Oberkante), jeder weitere darunter.</li>
+      <li>Zwei gleiche Zahlen verschmelzen zur doppelten Zahl — senkrecht übereinander oder waagerecht nebeneinander.</li>
+      <li>Löst ein Fall mehrere Verschmelzungen hintereinander aus, steigt deine Kombo — und der Bonus pro Verschmelzung wächst.</li>
+      <li>Der Turm ist voll, wenn keine Spalte mehr Platz hat. Dann ist die Runde vorbei.</li>
+      <li>Ein Zug lässt sich mit „Rückgängig" zurücknehmen — einmal pro Zug.</li>
+      <li>Im <strong>Ziel-Modus</strong> gewinnst du, sobald die gewählte Zahl auf dem Feld entsteht — die Zahl der Züge bis dahin zählt.</li>
+    </ul>
+    <button class="btn btn-primary" id="zt-info-close">Verstanden</button>
+  </div>
+</div>
+
+<script src="zw-game.js"></script>
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    if (typeof ztApplyTheme === 'function') ztApplyTheme(ztLoadThemePref());
+    const themeBtn = document.getElementById('zt-theme-btn');
+    if (themeBtn) themeBtn.addEventListener('click', ztToggleTheme);
+
+    const infoBtn = document.getElementById('zt-info-btn');
+    const infoBackdrop = document.getElementById('zt-info-backdrop');
+    const infoClose = document.getElementById('zt-info-close');
+    if (infoBtn && infoBackdrop) infoBtn.addEventListener('click', () => { infoBackdrop.hidden = false; });
+    if (infoClose && infoBackdrop) infoClose.addEventListener('click', () => { infoBackdrop.hidden = true; });
+    if (infoBackdrop) infoBackdrop.addEventListener('click', (e) => {
+      if (e.target === infoBackdrop) infoBackdrop.hidden = true;
+    });
+
+    try {
+      const stats = JSON.parse(localStorage.getItem('ztw-stats') || '{}');
+      const el = document.getElementById('zt-highest');
+      if (el) el.textContent = stats.highestTileEver || '–';
+    } catch (e) {}
+
+    // Weiterspielen-Kachel: nur einblenden, wenn ein unfertiges Spiel existiert.
+    try {
+      const saved = typeof ztLoadState === 'function' ? ztLoadState() : null;
+      const hasTiles = saved && Array.isArray(saved.grid) && saved.grid.some((col) => col.length > 0);
+      if (saved && hasTiles && !saved.over) {
+        const section = document.getElementById('zt-continue-section');
+        const sub = document.getElementById('zt-continue-sub');
+        const btn = document.getElementById('zt-continue-btn');
+        if (section && sub && btn) {
+          const mode = saved.mode || 'endless';
+          let href = 'zw-spiel.html?mode=endless';
+          let label = 'Endlos-Modus — Punkte: ' + (saved.score || 0);
+          if (mode === 'goal' && saved.goalTarget) {
+            href = 'zw-spiel.html?mode=goal&target=' + saved.goalTarget;
+            label = 'Ziel-Modus ' + saved.goalTarget + ' — Punkte: ' + (saved.score || 0) + ', Züge: ' + (saved.dropCount || 0);
+          }
+          sub.textContent = label;
+          btn.href = href;
+          section.hidden = false;
+        }
+      }
+    } catch (e) {}
+  });
+
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+      navigator.serviceWorker.register('zw-sw.js').catch(() => {});
+    });
+  }
+</script>
+</body>
+</html>

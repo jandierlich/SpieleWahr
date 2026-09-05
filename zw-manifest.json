@@ -1,0 +1,17 @@
+{
+  "name": "ZahlenturmWahr",
+  "short_name": "ZahlenturmWahr",
+  "description": "Zahlen fallen in einen 3D-Turm und verschmelzen zu neuen Zahlen. Offline spielbar.",
+  "start_url": "./zw-index.html",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#0a1022",
+  "theme_color": "#0b1224",
+  "orientation": "portrait-primary",
+  "icons": [
+    { "src": "zw-icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "zw-icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "zw-icon-maskable-192.png", "sizes": "192x192", "type": "image/png", "purpose": "maskable" },
+    { "src": "zw-icon-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}
